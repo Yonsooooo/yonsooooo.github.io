@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quotes Generator</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="icons/favicon-32x32.png"
+    />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="styles/popup.css" />
+    <script src="https://cdn.jsdelivr.net/npm/text-image/dist/text-image.js"></script>
+  </head>
+  <body>
+    <div id="mode">
+      <i class="far fa-lightbulb" id="modeIcon"></i>
+      <p id="modeText">Light Mode</p>
+    </div>
+    <div class="container">
+      <div class="header">
+        <h2>오늘의 입보살행론</h2>
+      </div>
+
+      <div class="main-content">
+        <div class="text-area">
+          <span class="quote"
+            >안녕하세요. 오늘의 입보살행론 구절을 확인할 수 있는 곳입니다. 지금바로 확인해보세요!</span
+          >
+        </div>
+
+        <div class="writer">아래의 버튼 누르기</div>
+
+        <div class="button-area">
+          <div class="button-container">
+            <button id="Qbtn" class="allBtn">
+              <i class="fas fa-cogs"></i>
+              확인하기
+            </button>
+            <button id="Cbtn" class="allBtn" title="Copy This!">
+              <i class="fas fa-clipboard"></i>
+              클립보드에 복사하기
+            </button>
+          </div>
+          <div>
+            <button
+              id="Cbtn"
+              class="allBtn"
+              title="Download This!"
+              onclick="downloadImage()"
+            >
+              <i class="fas fa-clipboard"></i>
+              이미지로 다운로드
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-bot">
+      <div id="snackbar">Copied to clipboard</div>
+    </div>
+
+    <script src="js/quotes.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+      const downloadImage = () => {
+        let text = document.querySelector(".quote").innerText;
+        let writer = String(document.querySelector(".writer").innerText);
+        // Add a line break after 10 words
+        let words = text.split(" ");
+        if (words.length > 10) {
+          let newWords = [];
+          let line = "";
+          for (let i = 0; i < words.length; i++) {
+            if (i % 10 === 0 && i !== 0) {
+              newWords.push(line);
+              line = "";
+            }
+            line += words[i] + " ";
+          }
+          newWords.push(line);
+          text = newWords.join("\n");
+        }
+        var style = {
+          font: "'Helvetica Neue'",
+          align: "center",
+          color: "rgba(0, 0, 0, 1)",
+          size: 16,
+          background: "rgba(255, 255, 255, 1)",
+          stroke: 0,
+          strokeColor: "rgba(0, 0, 255, 1)",
+          lineHeight: "1.6em",
+          bold: false,
+          italic: false,
+        };
+        var textImage = TextImage(style);
+        var data = textImage.toDataURL(text + "\n" + writer, "image/png", 0.8);
+        var link = document.createElement("a");
+        link.download = `${writer
+          .substring(1, writer.length)
+          .toLowerCase()}-quote.png`;
+        link.href = data;
+        link.click();
+      };
+    </script>
+  </body>
+</html>
